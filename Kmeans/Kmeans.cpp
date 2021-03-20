@@ -1,5 +1,5 @@
-#include <opencv2/opencv.hpp>
-#include <iostream>
+#include<opencv2/opencv.hpp>
+#include<iostream>
 using namespace cv;
 using namespace std;
 
@@ -12,13 +12,13 @@ int main()
 	int width = src1.cols;
 	int height = src1.rows;
 	int dims = src1.channels();
-	// ³õÊ¼»¯¶¨Òå
+	// åˆå§‹åŒ–å®šä¹‰
 	int sampleCount = width * height;
-	int clusterCount = 5;//·ÖÀàÊı K
+	int clusterCount = 5;//åˆ†ç±»æ•° K
 	Mat points(sampleCount, dims, CV_32F, Scalar(10));
-	Mat labels;	//±íÊ¾¼ÆËãÖ®ºó¸÷¸öÊı¾İµãµÄ×îÖÕµÄ·ÖÀàË÷Òı£¬ÊÇÒ»¸öINTÀàĞÍµÄMat¶ÔÏó
+	Mat labels;	//è¡¨ç¤ºè®¡ç®—ä¹‹åå„ä¸ªæ•°æ®ç‚¹çš„æœ€ç»ˆçš„åˆ†ç±»ç´¢å¼•ï¼Œæ˜¯ä¸€ä¸ªINTç±»å‹çš„Matå¯¹è±¡
 	Mat centers(clusterCount, 1, points.type());
-	// Í¼ÏñRGBµ½Êı¾İ¼¯×ª»»
+	// å›¾åƒRGBåˆ°æ•°æ®é›†è½¬æ¢
 	int index = 0;
 	for (int row = 0; row < height; row++) 
 	{
@@ -31,11 +31,11 @@ int main()
 			points.at<float>(index, 2) = static_cast<int>(rgb[2]);
 		}
 	}
-	// ÔËĞĞK-MeansÊı¾İ·ÖÀà
+	// è¿è¡ŒK-Meansæ•°æ®åˆ†ç±»
 	TermCriteria criteria = TermCriteria(TermCriteria::EPS + TermCriteria::COUNT, 10, 1.0);
-	//criteria±íÊ¾Ëã·¨ÖÕÖ¹µÄÌõ¼ş£¬´ïµ½×î´óÑ­»·ÊıÄ¿»òÕßÖ¸¶¨µÄ¾«¶ÈãĞÖµËã·¨¾ÍÍ£Ö¹¼ÌĞø·ÖÀàµü´ú¼ÆËã
+	//criteriaè¡¨ç¤ºç®—æ³•ç»ˆæ­¢çš„æ¡ä»¶ï¼Œè¾¾åˆ°æœ€å¤§å¾ªç¯æ•°ç›®æˆ–è€…æŒ‡å®šçš„ç²¾åº¦é˜ˆå€¼ç®—æ³•å°±åœæ­¢ç»§ç»­åˆ†ç±»è¿­ä»£è®¡ç®—
 	kmeans(points, clusterCount, labels, criteria, 3, KMEANS_PP_CENTERS, centers);
-	// ÏÔÊ¾Í¼Ïñ·Ö¸î½á¹û
+	// æ˜¾ç¤ºå›¾åƒåˆ†å‰²ç»“æœ
 	Mat result = Mat::zeros(src1.size(), CV_8UC3);
 	for (int row = 0; row < height; row++) 
 	{
