@@ -1,10 +1,10 @@
-#include "opencv2/opencv.hpp"
+#include<opencv2/opencv.hpp>
 #include<iostream>
 using namespace cv;
 using namespace std;
 
-#define WINDOW_NAME1 "¡¾³ÌĞò´°¿Ú1¡¿"        //Îª´°¿Ú±êÌâ¶¨ÒåµÄºê 
-#define WINDOW_NAME2 "¡¾·ÖË®ÁëËã·¨Ğ§¹ûÍ¼¡¿"        //Îª´°¿Ú±êÌâ¶¨ÒåµÄºê
+#define WINDOW_NAME1 "ã€ç¨‹åºçª—å£1ã€‘"        //ä¸ºçª—å£æ ‡é¢˜å®šä¹‰çš„å® 
+#define WINDOW_NAME2 "ã€åˆ†æ°´å²­ç®—æ³•æ•ˆæœå›¾ã€‘"        //ä¸ºçª—å£æ ‡é¢˜å®šä¹‰çš„å®
 
 Mat g_maskImage, g_srcImage, src;
 Point prevPt(-1, -1);
@@ -14,7 +14,7 @@ static void on_Mouse(int event, int x, int y, int flags, void*);
 
 int main()
 {
-	//¡¾1¡¿ÏÔÊ¾°ïÖúÎÄ×Ö
+	//ã€1ã€‘æ˜¾ç¤ºå¸®åŠ©æ–‡å­—
 	ShowHelpText();
 
 	src = imread("01.png");
@@ -26,20 +26,20 @@ int main()
 	cvtColor(g_maskImage, grayImage, COLOR_GRAY2BGR);
 	g_maskImage = Scalar::all(0);
 
-	//¡¾2¡¿ÉèÖÃÊó±ê»Øµ÷º¯Êı
+	//ã€2ã€‘è®¾ç½®é¼ æ ‡å›è°ƒå‡½æ•°
 	setMouseCallback(WINDOW_NAME1, on_Mouse, 0);
 
-	//¡¾3¡¿ÂÖÑ¯°´¼ü£¬½øĞĞ´¦Àí
+	//ã€3ã€‘è½®è¯¢æŒ‰é”®ï¼Œè¿›è¡Œå¤„ç†
 	while (1)
 	{
-		//»ñÈ¡¼üÖµ
+		//è·å–é”®å€¼
 		int c = waitKey(0);
 
-		//Èô°´¼ü¼üÖµÎªESCÊ±£¬ÍË³ö
+		//è‹¥æŒ‰é”®é”®å€¼ä¸ºESCæ—¶ï¼Œé€€å‡º
 		if ((char)c == 27)
 			break;
 
-		//°´¼ü¼üÖµÎª2Ê±£¬»Ö¸´Ô´Í¼
+		//æŒ‰é”®é”®å€¼ä¸º2æ—¶ï¼Œæ¢å¤æºå›¾
 		if ((char)c == '2')
 		{
 			g_maskImage = Scalar::all(0);
@@ -47,34 +47,34 @@ int main()
 			imshow("image", g_srcImage);
 		}
 
-		//Èô¼ì²âµ½°´¼üÖµÎª1»òÕß¿Õ¸ñ£¬Ôò½øĞĞ´¦Àí
+		//è‹¥æ£€æµ‹åˆ°æŒ‰é”®å€¼ä¸º1æˆ–è€…ç©ºæ ¼ï¼Œåˆ™è¿›è¡Œå¤„ç†
 		if ((char)c == '1' || (char)c == ' ')
 		{
-			//¶¨ÒåÒ»Ğ©²ÎÊı
+			//å®šä¹‰ä¸€äº›å‚æ•°
 			int i, j, compCount = 0;
 			vector<vector<Point> > contours;
 			vector<Vec4i> hierarchy;
 
-			//Ñ°ÕÒÂÖÀª
+			//å¯»æ‰¾è½®å»“
 			findContours(g_maskImage, contours, hierarchy, RETR_CCOMP, CHAIN_APPROX_SIMPLE);
 
-			//ÂÖÀªÎª¿ÕÊ±µÄ´¦Àí
+			//è½®å»“ä¸ºç©ºæ—¶çš„å¤„ç†
 			if (contours.empty())
 				continue;
 
-			//¿½±´ÑÚÄ¤
+			//æ‹·è´æ©è†œ
 			Mat maskImage(g_maskImage.size(), CV_32S);
 			maskImage = Scalar::all(0);
 
-			//Ñ­»·»æÖÆ³öÂÖÀª
+			//å¾ªç¯ç»˜åˆ¶å‡ºè½®å»“
 			for (int index = 0; index >= 0; index = hierarchy[index][0], compCount++)
 				drawContours(maskImage, contours, index, Scalar::all(compCount + 1), -1, 8, hierarchy, INT_MAX);
 
-			//compCountÎªÁãÊ±µÄ´¦Àí
+			//compCountä¸ºé›¶æ—¶çš„å¤„ç†
 			if (compCount == 0)
 				continue;
 
-			//Éú³ÉËæ»úÑÕÉ«
+			//ç”Ÿæˆéšæœºé¢œè‰²
 			vector<Vec3b> colorTab;
 			for (i = 0; i < compCount; i++)
 			{
@@ -85,13 +85,13 @@ int main()
 				colorTab.push_back(Vec3b((uchar)b, (uchar)g, (uchar)r));
 			}
 
-			//¼ÆËã´¦ÀíÊ±¼ä²¢Êä³öµ½´°¿ÚÖĞ
+			//è®¡ç®—å¤„ç†æ—¶é—´å¹¶è¾“å‡ºåˆ°çª—å£ä¸­
 			double dTime = (double)getTickCount();
 			watershed(srcImage, maskImage);
 			dTime = (double)getTickCount() - dTime;
-			printf("\t´¦ÀíÊ±¼ä = %gms\n", dTime*1000. / getTickFrequency());
+			printf("\tå¤„ç†æ—¶é—´ = %gms\n", dTime*1000. / getTickFrequency());
 
-			//Ë«²ãÑ­»·£¬½«·ÖË®ÁëÍ¼Ïñ±éÀú´æÈëwatershedImageÖĞ
+			//åŒå±‚å¾ªç¯ï¼Œå°†åˆ†æ°´å²­å›¾åƒéå†å­˜å…¥watershedImageä¸­
 			Mat watershedImage(maskImage.size(), CV_8UC3);
 			for (i = 0; i < maskImage.rows; i++)
 			{
@@ -106,7 +106,7 @@ int main()
 						watershedImage.at<Vec3b>(i, j) = colorTab[index - 1];
 				}
 			}
-			//»ìºÏ»Ò¶ÈÍ¼ºÍ·ÖË®ÁëĞ§¹ûÍ¼²¢ÏÔÊ¾×îÖÕµÄ´°¿Ú
+			//æ··åˆç°åº¦å›¾å’Œåˆ†æ°´å²­æ•ˆæœå›¾å¹¶æ˜¾ç¤ºæœ€ç»ˆçš„çª—å£
 			watershedImage = watershedImage * 0.5 + grayImage * 0.5;
 			imshow(WINDOW_NAME2, watershedImage);
 		}
@@ -115,20 +115,20 @@ int main()
 }
 
 
-//onMouse( )Êó±êÏûÏ¢»Øµ÷º¯Êı
+//onMouse( )é¼ æ ‡æ¶ˆæ¯å›è°ƒå‡½æ•°
 static void on_Mouse(int event, int x, int y, int flags, void*)
 {
-	//´¦ÀíÊó±ê²»ÔÚ´°¿ÚÖĞµÄÇé¿ö
+	//å¤„ç†é¼ æ ‡ä¸åœ¨çª—å£ä¸­çš„æƒ…å†µ
 	if (x < 0 || x >= g_srcImage.cols || y < 0 || y >= g_srcImage.rows)
 		return;
 
-	//´¦ÀíÊó±ê×ó¼üÏà¹ØÏûÏ¢
+	//å¤„ç†é¼ æ ‡å·¦é”®ç›¸å…³æ¶ˆæ¯
 	if (event == EVENT_LBUTTONUP || !(flags & EVENT_FLAG_LBUTTON))
 		prevPt = Point(-1, -1);
 	else if (event == EVENT_LBUTTONDOWN)
 		prevPt = Point(x, y);
 
-	//Êó±ê×ó¼ü°´ÏÂ²¢ÒÆ¶¯£¬»æÖÆ³ö°×É«ÏßÌõ
+	//é¼ æ ‡å·¦é”®æŒ‰ä¸‹å¹¶ç§»åŠ¨ï¼Œç»˜åˆ¶å‡ºç™½è‰²çº¿æ¡
 	else if (event == EVENT_MOUSEMOVE && (flags & EVENT_FLAG_LBUTTON))
 	{
 		Point pt(x, y);
@@ -143,10 +143,10 @@ static void on_Mouse(int event, int x, int y, int flags, void*)
 
 static void ShowHelpText()
 {
-	printf("µ±Ç°Ê¹ÓÃµÄOpenCV°æ±¾Îª£º" CV_VERSION);
-	printf("\tÇëÏÈÓÃÊó±êÔÚÍ¼Æ¬´°¿ÚÖĞ±ê¼Ç³ö´óÖÂµÄÇøÓò£¬\n\n\tÈ»ºóÔÙ°´¼ü¡¾1¡¿»òÕß¡¾SPACE¡¿Æô¶¯Ëã·¨¡£"
-		"\n\n\t°´¼ü²Ù×÷ËµÃ÷: \n\n"
-		"\t\t¼üÅÌ°´¼ü¡¾1¡¿»òÕß¡¾SPACE¡¿- ÔËĞĞµÄ·ÖË®Áë·Ö¸îËã·¨\n"
-		"\t\t¼üÅÌ°´¼ü¡¾2¡¿- »Ö¸´Ô­Ê¼Í¼Æ¬\n"
-		"\t\t¼üÅÌ°´¼ü¡¾ESC¡¿- ÍË³ö³ÌĞò\n\n\n");
+	printf("å½“å‰ä½¿ç”¨çš„OpenCVç‰ˆæœ¬ä¸ºï¼š" CV_VERSION);
+	printf("\tè¯·å…ˆç”¨é¼ æ ‡åœ¨å›¾ç‰‡çª—å£ä¸­æ ‡è®°å‡ºå¤§è‡´çš„åŒºåŸŸï¼Œ\n\n\tç„¶åå†æŒ‰é”®ã€1ã€‘æˆ–è€…ã€SPACEã€‘å¯åŠ¨ç®—æ³•ã€‚"
+		"\n\n\tæŒ‰é”®æ“ä½œè¯´æ˜: \n\n"
+		"\t\té”®ç›˜æŒ‰é”®ã€1ã€‘æˆ–è€…ã€SPACEã€‘- è¿è¡Œçš„åˆ†æ°´å²­åˆ†å‰²ç®—æ³•\n"
+		"\t\té”®ç›˜æŒ‰é”®ã€2ã€‘- æ¢å¤åŸå§‹å›¾ç‰‡\n"
+		"\t\té”®ç›˜æŒ‰é”®ã€ESCã€‘- é€€å‡ºç¨‹åº\n\n\n");
 }
