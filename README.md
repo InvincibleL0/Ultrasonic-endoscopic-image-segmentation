@@ -27,10 +27,23 @@ int floodFill( InputOutputArray image, InputOutputArray mask, Point seedPoint, S
 
 2）分水岭
 
+分水岭算法会把跟临近像素间的相似性作为重要的参考依据，从而将在空间位置上相近并且灰度值相近（求梯度）的像素点互相连接起来构成一个封闭的轮廓。分水岭算法常用的操作步骤：彩色图像灰度化，然后再求梯度图，最后在梯度图的基础上进行分水岭算法，求得分段图像的边缘线。
 
+OpenCV中watershed函数原型：
+
+void watershed( InputArray image, InputOutputArray markers );
+
+第一个参数 image，必须是一个8bit 3通道彩色图像矩阵。第二个参数是关键：在执行分水岭函数watershed之前，必须对第二个参数markers进行处理，它应该包含不同区域的轮廓，每个轮廓有一个自己唯一的编号，轮廓的定位可以通过OpenCV中findContours()方法实现，这个是执行分水岭之前的要求。算法会根据markers传入的轮廓作为种子（也就是所谓的注水点），对图像上其他的像素点根据分水岭算法规则进行判断，并对每个像素点的区域归属进行划定，直到处理完图像上所有像素点。
 
 3）K-means
 
+K-means算法是经典的聚类方法，基本思想是：以空间中K个点为中心进行聚类，对最靠近他们的对象归类。通过迭代的方法，逐次更新各聚类中心的值，直至得到最好的聚类结果。K-means算法的缺点也很明显：K值必须人为设定、K个中心点的随机性影响最终的分类结果。
+
+OpenCV中kmeans函数原型：
+
+double kmeans( InputArray data, int K, InputOutputArray bestLabels, TermCriteria criteria, int attempts, int flags, OutputArray centers = noArray() );
+
+由于噪声点或者其它干扰因素的存在，使用以上三种算法常常存在过度分割的现象，这是因为很多很小的局部极值点的存在。并且无法避免手动操作，而我们的预期目的是实现全自动分割。
 
 4）卷积神经网络
 
